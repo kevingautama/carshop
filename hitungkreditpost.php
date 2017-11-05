@@ -204,34 +204,6 @@
       </div>
     </div>   
   </div>
-</div><div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">Angsuran per Bulan</h3>
-  </div>
-  <div class="panel-body">
-    <div class="form-group">
-      <label class="col-lg-2 control-label">Angsuran Pokok/bulan</label>
-      <div class="col-lg-10">
-        <b class="form-control"> Rp '.number_format($result[0]['angsuranpokok']).'</b>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-lg-2 control-label">Angsuran Bunga/bulan</label>
-      <div class="col-lg-10">
-        <b class="form-control"> Rp '.number_format($result[0]['angsuranbunga']).'</b>
-      </div>
-    <div class="form-group">
-      <label class="col-lg-2 control-label">+</label>
-      <div class="col-lg-10"><hr></div>     
-    </div>      
-    </div>
-    <div class="form-group">
-      <label class="col-lg-2 control-label">Total Angsuran/bulan</label>
-      <div class="col-lg-10">
-        <b class="form-control"> Rp '.number_format($result[0]['totalangsuran']).'</b>
-      </div>
-    </div>   
-  </div>
 </div>';
   }
 ?>
