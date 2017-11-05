@@ -5,9 +5,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="style/jquery-ui.min.css">
-	<!-- <script src="js/jquery.dataTables.min.js"></script> -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-	<!-- <link rel="stylesheet" href="style/jquery.dataTables.min.css"> -->
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<link rel="stylesheet" href="style/bootstrap.css">
 	<script src="js/bootstrap.js"></script>
@@ -51,7 +49,6 @@
 </thead>
 <tbody>
 	<?php
-	require_once('dbconfig.php');
 	require_once('lib/nusoap.php');
 	$client = new nusoap_client('http://localhost/carshop/server.php');
 	$key = '';
@@ -60,12 +57,12 @@
         {
           foreach($result as $data)
           {
-            echo "<tr><td>".$data['nama']."</td><td>".$data['merek']."</td><td>Rp ".number_format($data['harga'])."</td>
-            <td><a href='hitungkredit.php?nama=".$data['nama']."&harga=".$data['harga']."&merek=".$data['merek']."' class='btn btn-primary btn-sm'>Kredit</a>
+            echo '<tr><td>'.$data['nama'].'</td><td>'.$data['merek'].'</td><td>Rp '.number_format($data['harga']).'</td>
+            <td><a href="hitungkredit.php?id='.$data['id'].'" class="btn btn-primary btn-sm">Kredit</a>
             &nbsp;
-            <a href='update.php?id=".$data['id']."&nama=".$data['nama']."&harga=".$data['harga']."&merek=".$data['merek']."' class='btn btn-primary btn-sm'>Edit</a>
+            <a href="update.php?id='.$data['id'].'" class="btn btn-primary btn-sm">Edit</a>
             &nbsp;
-            <a href='index.php?op=delete&id=$data[id]' class='btn btn-primary btn-sm'>Delete</a></tr>";
+            <a href="index.php?op=delete&id='.$data['id'].'" onclick="return confirm(\'Are you sure want to delete?\');"" class="btn btn-primary btn-sm">Delete</a></tr>';
           } 
         }
  if (isset($_GET['op']))

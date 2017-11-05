@@ -31,15 +31,21 @@
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        
+      <ul class="nav navbar-nav">  
       </ul>
-      
     </div>
   </div>
 </nav>
 
 <div class="container">
+  <?php
+    require_once('lib/nusoap.php');
+    $client = new nusoap_client('http://localhost/carshop/server.php');
+    if(isset($_GET['id'])){
+      $key = $_GET['id'];
+    }
+    $resultbyid = $client->call('get', array('key' => $key));
+  ?>
 	<div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Informasi Kredit</h3>
@@ -49,22 +55,22 @@
     <div class="form-group">
       <label class="col-lg-2 control-label">Nama</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo $_GET['nama'] ?></b>
-        <input type="hidden" name="nama" value="<?php echo $_GET['nama'] ?>">
+        <b class="form-control"><?php echo $resultbyid[0]['nama'] ?></b>
+        <input type="hidden" name="nama" value="<?php echo $resultbyid[0]['nama'] ?>">
       </div>
     </div>
     <div class="form-group">
       <label class="col-lg-2 control-label">Merek</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo $_GET['merek'] ?></b>
-        <input type="hidden" name="merek" value="<?php echo $_GET['merek'] ?>">
+        <b class="form-control"><?php echo $resultbyid[0]['merek'] ?></b>
+        <input type="hidden" name="merek" value="<?php echo $resultbyid[0]['merek'] ?>">
       </div>
     </div>
    <div class="form-group">
       <label class="col-lg-2 control-label">Harga</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo "Rp ".number_format($_GET['harga']) ?></b>
-        <input type="hidden" name="harga" value="<?php echo $_GET['harga'] ?>">
+        <b class="form-control"><?php echo "Rp ".number_format($resultbyid[0]['harga']) ?></b>
+        <input type="hidden" name="harga" value="<?php echo $resultbyid[0]['harga'] ?>">
       </div>
     </div>
     <div class="form-group">
@@ -90,7 +96,7 @@
       <div class="col-lg-10">
         <select class="form-control" name="tipebunga">
           <option value="flat">Flat</option>
-          <option value="flat">Efektif</option>
+          <option value="efektif">Efektif</option>
         </select>
       </div>
     </div>

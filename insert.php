@@ -49,8 +49,6 @@ if(isset($_GET['action'])){
     $nama = $_POST['nama'];
     $merek = $_POST['merek'];
     $harga = $_POST['harga'];
-    
-    
       $result = $client->call('insert', array('nama' => $nama,'merek' => $merek, 'harga' => $harga));
       if($result=="true")
       {
@@ -61,7 +59,7 @@ if(isset($_GET['action'])){
         echo '<div class="alert alert-dismissible alert-warning">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   <h4>Warning!</h4>
-  <p>Input gagal.</p>
+  <p>Input failed.</p>
 </div>';
       }
   }

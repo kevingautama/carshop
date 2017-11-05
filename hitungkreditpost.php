@@ -5,9 +5,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="style/jquery-ui.min.css">
-	<!-- <script src="js/jquery.dataTables.min.js"></script> -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-	<!-- <link rel="stylesheet" href="style/jquery.dataTables.min.css"> -->
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<link rel="stylesheet" href="style/bootstrap.css">
 	<script src="js/bootstrap.js"></script>
@@ -45,7 +43,8 @@
     $tenor = $_POST['tenor'];
     $bunga = $_POST['bunga'];
     $dp = $_POST['dp'];
-    $result = $client->call('hitungkredit', array('harga' => $harga,'tenor' => $tenor, 'bunga' => $bunga, 'dp' => $dp));
+    $tipebunga = $_POST['tipebunga'];
+    $result = $client->call('hitungkredit', array('harga' => $harga,'tenor' => $tenor, 'bunga' => $bunga, 'dp' => $dp,'tipebunga' => $tipebunga));
   
 ?>
 <div class="container">
@@ -99,7 +98,7 @@
       <div class="col-lg-10">
         <select class="form-control" name="tipebunga">
           <option value="flat">Flat</option>
-          <option value="flat">Efektif</option>
+          <option value="efektif">Efektif</option>
         </select>
       </div>
     </div>
@@ -175,7 +174,9 @@
 </div>
 </div>
 
-<div class="panel panel-primary">
+<?php 
+  if($_POST['tipebunga'] == 'flat'){
+    echo '<div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Angsuran per Bulan</h3>
   </div>
@@ -183,13 +184,13 @@
     <div class="form-group">
       <label class="col-lg-2 control-label">Angsuran Pokok/bulan</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo "Rp ".number_format($result[0]['angsuranpokok']) ?></b>
+        <b class="form-control"> Rp '.number_format($result[0]['angsuranpokok']).'</b>
       </div>
     </div>
     <div class="form-group">
       <label class="col-lg-2 control-label">Angsuran Bunga/bulan</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo "Rp ".number_format($result[0]['angsuranbunga']) ?></b>
+        <b class="form-control"> Rp '.number_format($result[0]['angsuranbunga']).'</b>
       </div>
     <div class="form-group">
       <label class="col-lg-2 control-label">+</label>
@@ -199,11 +200,42 @@
     <div class="form-group">
       <label class="col-lg-2 control-label">Total Angsuran/bulan</label>
       <div class="col-lg-10">
-        <b class="form-control"><?php echo "Rp ".number_format($result[0]['totalangsuran']) ?></b>
+        <b class="form-control"> Rp '.number_format($result[0]['totalangsuran']).'</b>
       </div>
     </div>   
   </div>
-</div>
+</div><div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Angsuran per Bulan</h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Angsuran Pokok/bulan</label>
+      <div class="col-lg-10">
+        <b class="form-control"> Rp '.number_format($result[0]['angsuranpokok']).'</b>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Angsuran Bunga/bulan</label>
+      <div class="col-lg-10">
+        <b class="form-control"> Rp '.number_format($result[0]['angsuranbunga']).'</b>
+      </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">+</label>
+      <div class="col-lg-10"><hr></div>     
+    </div>      
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Total Angsuran/bulan</label>
+      <div class="col-lg-10">
+        <b class="form-control"> Rp '.number_format($result[0]['totalangsuran']).'</b>
+      </div>
+    </div>   
+  </div>
+</div>';
+  }
+?>
+
 
 <div class="panel panel-primary">
   <div class="panel-heading">

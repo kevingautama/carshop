@@ -10,6 +10,11 @@
 
 	function get($key){
 		$query = 'select * from car';
+		if(isset($key)){
+			if($key != ''){
+				$query = $query." where id='".$key."'";
+			}
+		}
 		$hasil = mysql_query($query);
 		while($data = mysql_fetch_array($hasil)){
 			$result[] = array('id' => $data['id'],'nama' => $data['nama'],'merek' => $data['merek'], 'harga' => $data['harga']);
@@ -57,7 +62,7 @@
 		}
 
 
-	function hitungkredit($harga,$tenor,$bunga,$dp){
+	function hitungkredit($harga,$tenor,$bunga,$dp,$tipebunga){
 		$dpnominal=$dp*$harga/100;
 		$tenorbulan=$tenor*12;
 		$bungabulan=$bunga/12;
@@ -69,21 +74,41 @@
 		$tmpjumlahpinjaman=$jumlahpinjaman;
 		$tabelangsuran[]=array();
 
-		for ($i = 0; $i <= $tenorbulan; $i++) {
-			if(($i)==0){
-				$angsur=array('bulan'=>$i,'angsuran_bunga'=>'0','angsuran_pokok'=>'0','total_angsuran'=>'0','sisa_pinjaman'=>$tmpjumlahpinjaman);
+		if($tipebunga == 'flat'){
+			for ($i = 0; $i <= $tenorbulan; $i++) {
+				if(($i)==0){
+					$angsur=array('bulan'=>$i,'angsuran_bunga'=>'0','angsuran_pokok'=>'0','total_angsuran'=>'0','sisa_pinjaman'=>$tmpjumlahpinjaman);
+				}
+				else{
+					$angsur=array('bulan'=>$i,'angsuran_bunga'=>$angsuranbunga,'angsuran_pokok'=>$angsuranpokok,'total_angsuran'=>$totalangsuran,'sisa_pinjaman'=>$tmpjumlahpinjaman);
+				}
+				if($i==0){
+					array_pop($tabelangsuran);
+				}
+				array_push($tabelangsuran, $angsur);
+				$tmpjumlahpinjaman=$tmpjumlahpinjaman-$angsuranpokok;
 			}
-			else{
-				$angsur=array('bulan'=>$i,'angsuran_bunga'=>$angsuranbunga,'angsuran_pokok'=>$angsuranpokok,'total_angsuran'=>$totalangsuran,'sisa_pinjaman'=>$tmpjumlahpinjaman);
+		}else{
+			for ($i = 0; $i <= $tenorbulan; $i++) {
+				if(($i)==0){
+					$angsur=array('bulan'=>$i,'angsuran_bunga'=>'0','angsuran_pokok'=>'0','total_angsuran'=>'0','sisa_pinjaman'=>$tmpjumlahpinjaman);
+				}
+				else{
+						$angsur=array('bulan'=>$i,'angsuran_bunga'=>$tmpjumlahpinjaman*$bunga/100/12,'angsuran_pokok'=>$angsuranpokok,'total_angsuran'=>($tmpjumlahpinjaman*$bunga/100/12)+$angsuranpokok,'sisa_pinjaman'=>$tmpjumlahpinjaman-$angsuranpokok);
+				}
+				if($i==0){
+					array_pop($tabelangsuran);
+				}
+				array_push($tabelangsuran, $angsur);
+				
+				if(($i)!=0){
+					$tmpjumlahpinjaman=$tmpjumlahpinjaman-$angsuranpokok;
+				}
+				
+				
 			}
-			if($i==0){
-				array_pop($tabelangsuran);
-			}
-			array_push($tabelangsuran, $angsur);
-			$tmpjumlahpinjaman=$tmpjumlahpinjaman-$angsuranpokok;
-			
-			
 		}
+		
 		$result[]=array('dpnominal' => $dpnominal,'tenorbulan' => $tenorbulan, 'bungabulan' => $bungabulan, 'jumlahpinjaman' => $jumlahpinjaman, 'angsuranpokok' => $angsuranpokok, 'angsuranbunga' => $angsuranbunga, 'totalangsuran' => $totalangsuran, 'angsuranpertama' => $angsuranpertama, 'tabelangsuran'=> $tabelangsuran);
 		return $result;
 	}
